@@ -3,11 +3,12 @@ import { createHandler } from "../examples/server.js";
 import { PNG, PNG_BYTES } from "./fixtures.js";
 
 const handle = createHandler();
+const session = await (await handle(new Request("http://127.0.0.1:4173/api/demo-session"))).json();
 const payload = { id: "demo-id", type: "feedback", message: "A useful note" };
 function request(options = {}) {
   return new Request("http://127.0.0.1:4173/api/feedback", {
     method: "POST",
-    headers: { "Content-Type": "application/json", Authorization: "Bearer uinotate-demo-token", ...options.headers },
+    headers: { "Content-Type": "application/json", Authorization: "Bearer " + session.token, ...options.headers },
     body: JSON.stringify(options.payload ?? payload)
   });
 }
@@ -17,7 +18,7 @@ describe("local example server", () => {
     const redirect = await handle(new Request("http://localhost/"));
     expect(redirect.status).toBe(302);
     expect(redirect.headers.get("Location")).toBe("/examples/");
-    for (const path of ["/examples/", "/examples/minimal.html", "/lib.js", "/uinotate.css", "/examples/demo.js", "/examples/demo.css"]) {
+    for (const path of ["/examples/", "/examples/minimal.html", "/lib.js", "/uinotate.css", "/examples/demo.js", "/examples/demo.css", "/examples/minimal.js", "/examples/minimal.css"]) {
       const response = await handle(new Request("http://localhost" + path));
       expect(response.status).toBe(200);
       expect((await response.text()).length).toBeGreaterThan(20);
@@ -30,7 +31,7 @@ describe("local example server", () => {
     expect((await handle(request({ payload: { ...payload, type: "annotation" } }))).status).toBe(422);
     const response = await handle(request());
     expect(response.status).toBe(201);
-    expect(await response.json()).toEqual({ accepted: true, id: "demo-id" });
+    expect(await response.json()).toEqual({ accepted: true, id: "demo-id", stored: false });
   });
   test("supports the simulated failure used to verify draft retention", async () => {
     expect((await handle(request({ headers: { "X-Demo-Fail": "true" } }))).status).toBe(503);

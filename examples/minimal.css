@@ -1,0 +1,7 @@
+body { max-width: 680px; padding: 60px 24px; margin: auto; color: #273d35; background: #f8fbf7; font: 16px/1.7 system-ui, sans-serif; }
+h1 { line-height: 1.2; letter-spacing: -1px; }
+a { color: #287465; }
+#example-button { padding: 12px 18px; border: 0; border-radius: 6px; color: white; background: #287465; font: inherit; cursor: pointer; }
+pre { padding: 20px; background: #eef4eb; border-radius: 8px; overflow: auto; font-size: 12px; }
+/* Plain CSS overrides apply to all widget surfaces. */
+[data-uinotate] { --uinotate-accent: #287465; --uinotate-accent-hover: #1f5c50; --uinotate-soft: #f0f7f3; --uinotate-radius: 10px; }

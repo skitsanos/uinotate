@@ -4,6 +4,10 @@ A standalone JavaScript widget for quick feedback and DOM element annotations, w
 
 The launcher peeks out from a configurable edge. Hover, focus, or tap it to reveal an animated arc with **Quick feedback**, **Annotate**, and **About** buttons. Feedback opens a small modal. Annotation mode lets a user select a visible element, review its screenshot, and write a note about its style, layout, content, or interaction. The screenshot can be retaken or left out before sending.
 
+**Live examples:** [Playground](https://uinotate.netlify.app/examples/) · [Minimal integration](https://uinotate.netlify.app/examples/minimal.html)
+
+See [Netlify deployment](docs/netlify-deployment.md) for a complete static-site and serverless API example, including signed demo sessions, body limits, rate limits, and deployment commands. The public demo validates feedback and discards it; it does not store submitted messages or screenshots.
+
 ## Features
 
 - Quick feedback about the current page.
@@ -21,6 +25,11 @@ uinotate.css           Distributable widget styles
 src/widget.js          Widget implementation and public API
 src/screenshot.js      Element capture, privacy filters, and image size limits
 scripts/build.js       Bun build that generates lib.js
+scripts/build-site.js  Allowlisted static demo build for Netlify
+netlify.toml           Build, headers, redirects, and local runtime configuration
+netlify/functions/     Session and feedback HTTP functions
+netlify/lib/           Shared validation and session signing code
+docs/                  Deployment guide
 examples/              Playground, minimal integration, and local demo server
 tests/                 Widget, screenshot, and demo server tests
 bun.lock               Locked development dependencies
@@ -43,6 +52,8 @@ Open [the playground](http://127.0.0.1:4173/examples/). It includes live edge/of
 - `examples/minimal.html`: a minimal callback integration and CSS theme overrides; also works when opened directly from disk.
 
 The demo server listens on `127.0.0.1:4173`. Override the port with `UINOTATE_DEMO_PORT=4300 bun run dev`. It acknowledges and discards submissions; it does not store feedback. It is a development example, not a production feedback backend.
+
+The playground fetches a signed, 15-minute session from `/api/demo-session`, then sends it as the Bearer token on `/api/feedback`. The local server generates a temporary signing key at startup. For Netlify's local headers, redirects, and function runtime, use `bun run dev:netlify` and open `http://localhost:8888/examples/`.
 
 ## Include it in a page
 
@@ -313,6 +324,6 @@ bun run check
 
 The widget build and example server use Bun; `bun run check` also requires Node.js for its syntax checks. After editing JavaScript under `src/`, rebuild `lib.js` and reload the example page. Changes to `uinotate.css` can be tested with a page reload.
 
-Tests cover request headers and payloads, selector accuracy, selection click suppression, keyboard cancellation, opt-in text capture, errors/retries, draft retention, timeouts, duplicate sends, lifecycle cleanup, screenshot attachment/omission, privacy exclusions, capture races, image limits, and the local server. Happy DOM supplies headless DOM tests; renderer adapters keep those tests deterministic. Real rasterization is checked in the browser examples.
+Tests cover request headers and payloads, selector accuracy, selection click suppression, keyboard cancellation, opt-in text capture, errors/retries, draft retention, timeouts, duplicate sends, lifecycle cleanup, screenshot attachment/omission, privacy exclusions, capture races, image limits, signed session validation, streamed request size limits, static publish isolation, and the local server. Happy DOM supplies headless DOM tests; renderer adapters keep those tests deterministic. Real rasterization is checked in the browser examples.
 
 Widget source is in `src/widget.js` and screenshot logic is in `src/screenshot.js`. Run `bun run build` after source changes to regenerate the distributable `lib.js`; `bun run test` builds it first so tests exercise the current bundle. Editing `lib.js` directly will be overwritten by a build. html-to-image is a pinned build dependency, and its MIT license is included in the generated bundle. Consumers still deploy only `lib.js` and `uinotate.css`.

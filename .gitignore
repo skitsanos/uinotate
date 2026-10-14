@@ -1,3 +1,8 @@
 node_modules/
 .DS_Store
 test-results/
+dist/
+.netlify/
+.env
+.env.*
+deno.lock

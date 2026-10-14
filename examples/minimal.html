@@ -5,14 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Uinotate — minimal integration</title>
   <link rel="stylesheet" href="../uinotate.css">
-  <style>
-    body { max-width: 680px; padding: 60px 24px; margin: auto; color: #273d35; background: #f8fbf7; font: 16px/1.7 system-ui, sans-serif; }
-    h1 { line-height: 1.2; letter-spacing: -1px; } a { color: #287465; }
-    #example-button { padding: 12px 18px; border: 0; border-radius: 6px; color: white; background: #287465; font: inherit; cursor: pointer; }
-    pre { padding: 20px; background: #eef4eb; border-radius: 8px; overflow: auto; font-size: 12px; }
-    /* Plain CSS overrides work too. The selector scopes this to Uinotate. */
-    [data-uinotate] { --uinotate-accent: #287465; --uinotate-accent-hover: #1f5c50; --uinotate-soft: #f0f7f3; --uinotate-radius: 10px; }
-  </style>
+  <link rel="stylesheet" href="minimal.css">
 </head>
 <body>
   <a href="index.html">← Back to the playground</a>
@@ -22,17 +15,6 @@
   <p>The callback below only displays the payload. Nothing is sent or saved.</p>
   <pre id="received" tabindex="0" aria-label="Submitted feedback">Your submitted JSON will appear here.</pre>
   <script src="../lib.js"></script>
-  <script>
-    const widget = Uinotate.init({
-      position: "left",
-      offset: "55%",
-      metadata: { example: "minimal" },
-      onSubmit: async (payload, { signal }) => {
-        if (signal.aborted) throw new DOMException("Aborted", "AbortError");
-        document.getElementById("received").textContent = JSON.stringify(payload, null, 2);
-      }
-    });
-    document.getElementById("example-button").addEventListener("click", () => widget.openFeedback());
-  </script>
+  <script src="minimal.js"></script>
 </body>
 </html>

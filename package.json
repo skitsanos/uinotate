@@ -5,9 +5,13 @@
   "description": "A standalone feedback and DOM annotation widget with element screenshots.",
   "scripts": {
     "dev": "bun examples/server.js",
+    "dev:netlify": "bun run build:site && bun scripts/dev-netlify.js",
     "build": "bun scripts/build.js",
+    "build:site": "bun run build && bun scripts/build-site.js",
+    "netlify:secret": "bun scripts/setup-netlify-secret.js",
+    "smoke:site": "bun scripts/smoke-site.js",
     "test": "bun run build && bun test",
-    "check": "node --check lib.js && node --check src/widget.js && node --check src/screenshot.js && node --check scripts/build.js && node --check examples/server.js && node --check examples/demo.js"
+    "check": "bun scripts/check.js"
   },
   "devDependencies": {
     "happy-dom": "^21.0.1",

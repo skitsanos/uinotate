@@ -6,10 +6,20 @@ const themes = {
   ink: { "--uinotate-accent": "#292d3a", "--uinotate-accent-hover": "#171a24", "--uinotate-soft": "#f2f3f5", "--uinotate-radius": "8px" }
 };
 let count = 0;
+let demoSession;
+async function getDemoToken() {
+  if (!demoSession || Date.parse(demoSession.expiresAt) <= Date.now() + 30000) {
+    const response = await fetch("/api/demo-session", { credentials: "omit", referrerPolicy: "no-referrer" });
+    if (!response.ok) throw new Error("The demo service could not start a session. Please try again.");
+    demoSession = await response.json();
+  }
+  return demoSession.token;
+}
 const widget = Uinotate.init({
   apiUrl: "/api/feedback",
-  token: () => "uinotate-demo-token",
+  token: getDemoToken,
   metadata: { project: "uinotate-playground", environment: "demo" },
+  onError() { demoSession = null; },
   onSuccess(payload) {
     count++;
     document.getElementById("empty-payload").hidden = true;
