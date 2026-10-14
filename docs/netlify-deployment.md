@@ -6,7 +6,7 @@ The deployment serves the examples and the two widget files over HTTPS. Netlify 
 
 ## What gets deployed
 
-`bun run build:site` rebuilds `lib.js` and copies an explicit list of eight public files into `dist/`. Project source, tests, dependencies, signing configuration, and function source remain outside that directory. Unexpected files or symlinks in `dist/` stop the build rather than being published or removed.
+`bun run build:site` rebuilds `lib.js` and copies an explicit list of eight public files into `dist/`. Project source, tests, dependencies, signing configuration, and function source remain outside that directory. Unexpected files or symlinks in `dist/` stop the build rather than being published or removed. During a Netlify cloud build, the script removes only the generated `dist/netlify.toml` that Netlify caches after a previous build; this makes repeated deployments work without including the resolved configuration in the public files.
 
 `netlify.toml` defines the build, publish directory, function directory, root redirect, cache behavior, and browser security headers. The minimal example uses external JavaScript so `script-src 'self'` can be used. Inline styles and `data:` images are allowed for the widget's style configuration and DOM screenshot renderer.
 
@@ -45,7 +45,7 @@ For Git-based deployments, connect your fork through `netlify init` or Netlify's
 | Publish directory | `dist` |
 | Functions directory | `netlify/functions` |
 
-The configuration file supplies these values. Keep the `.netlify/` local site link and any `.env` files out of Git. Node and Bun build versions are declared in `netlify.toml`.
+The configuration file supplies these values. Keep the `.netlify/` local site link and any `.env` files out of Git. Node and Bun build versions are declared in `netlify.toml`. This repository is connected to the `uinotate` site: pushes to `main` trigger production builds through a repository webhook and a read-only deploy key.
 
 ## Deploy from the CLI
 

@@ -10,7 +10,7 @@ for (const path of ["/", "/examples/", "/examples/minimal.html", "/examples/demo
   check(response.headers.get("X-Content-Type-Options") === "nosniff", path + " is missing its content type protection");
   check((await response.text()).length > 20, path + " is empty");
 }
-for (const path of ["/src/widget.js", "/netlify/lib/demo-api.js", "/.env", "/package.json"]) check((await request(path)).status === 404, "Private project file is exposed: " + path);
+for (const path of ["/src/widget.js", "/netlify/lib/demo-api.js", "/netlify.toml", "/.netlify/functions/manifest.json", "/.env", "/package.json"]) check((await request(path)).status === 404, "Private project file is exposed: " + path);
 const sessionResponse = await request("/api/demo-session");
 check(sessionResponse.status === 200, "Session endpoint returned " + sessionResponse.status);
 check(sessionResponse.headers.get("Cache-Control") === "no-store", "Sessions must not be cached");

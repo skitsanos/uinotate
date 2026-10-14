@@ -26,6 +26,19 @@ describe("Netlify publish bundle", () => {
       expect(await Bun.file(join(directory, "private.txt")).text()).toBe("do not publish");
     } finally { await rm(directory, { recursive: true, force: true }); }
   });
+  test("rebuilds a Netlify cache without publishing its generated config", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "uinotate-site-"));
+    try {
+      const output = pathToFileURL(directory + "/");
+      await buildSite({ output });
+      await writeFile(join(directory, "netlify.toml"), "# Netlify resolved build configuration");
+      await expect(buildSite({ output, netlifyBuild: false })).rejects.toThrow("Unexpected entry");
+      expect(await Bun.file(new URL("netlify.toml", output)).exists()).toBe(true);
+      await buildSite({ output, netlifyBuild: true });
+      expect(await Bun.file(new URL("netlify.toml", output)).exists()).toBe(false);
+      expect((await readdir(directory, { recursive: true, withFileTypes: true })).filter((entry) => entry.isFile()).length).toBe(SITE_FILES.length);
+    } finally { await rm(directory, { recursive: true, force: true }); }
+  });
   test("rejects symlinked publish content", async () => {
     const directory = await mkdtemp(join(tmpdir(), "uinotate-site-"));
     try {
