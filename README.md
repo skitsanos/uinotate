@@ -6,6 +6,10 @@ The launcher peeks out from a configurable edge. Hover, focus, or tap it to reve
 
 **Live examples:** [Playground](https://uinotate.netlify.app/examples/) · [Minimal integration](https://uinotate.netlify.app/examples/minimal.html)
 
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/skitsanos/uinotate&fullConfiguration=true)
+
+Deploy your own copy of the demo with the button above. During setup, enter a unique `UINOTATE_DEMO_SIGNING_SECRET` of at least 32 characters; generate one locally with `openssl rand -hex 32`. Netlify reads the build and function settings from `netlify.toml`.
+
 See [Netlify deployment](docs/netlify-deployment.md) for a complete static-site and serverless API example, including signed demo sessions, body limits, rate limits, and deployment commands. The public demo validates feedback and discards it; it does not store submitted messages or screenshots.
 
 ## Features

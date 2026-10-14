@@ -4,6 +4,16 @@ The live playground is at [uinotate.netlify.app](https://uinotate.netlify.app/ex
 
 The deployment serves the examples and the two widget files over HTTPS. Netlify Functions provide `/api/demo-session` and `/api/feedback`, so feedback and PNG annotations exercise a real HTTP request. The service validates and acknowledges submissions, then discards them. It does not maintain a feedback inbox or store screenshots.
 
+## Deploy your own copy with the button
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/skitsanos/uinotate&fullConfiguration=true)
+
+1. Select the button, sign in to Netlify, and follow the prompts to copy the repository into your Git provider account and create your own site.
+2. Generate a signing secret on your computer with `openssl rand -hex 32`, then paste the result into the required `UINOTATE_DEMO_SIGNING_SECRET` field. Use a unique value for your site and keep it out of repository files and shared URLs.
+3. Deploy using the build settings supplied by `netlify.toml`. Open the resulting site to try feedback and screenshot annotations.
+
+The `[template.environment]` entry declares a required setup field, following [Netlify's template configuration](https://docs.netlify.com/deploy/create-deploys/#file-based-template-configuration); its text is a field label, not a default secret. This setup does not copy the original site's credentials. The new demo also acknowledges and discards submissions.
+
 ## What gets deployed
 
 `bun run build:site` rebuilds `lib.js` and copies an explicit list of eight public files into `dist/`. Project source, tests, dependencies, signing configuration, and function source remain outside that directory. Unexpected files or symlinks in `dist/` stop the build rather than being published or removed. During a Netlify cloud build, the script removes only the generated `dist/netlify.toml` that Netlify caches after a previous build; this makes repeated deployments work without including the resolved configuration in the public files.

@@ -6,6 +6,9 @@
   NODE_VERSION = "22"
   BUN_VERSION = "1.4.3"
 
+[template.environment]
+  UINOTATE_DEMO_SIGNING_SECRET = "Enter a unique random secret of at least 32 characters (generate with openssl rand -hex 32)."
+
 [functions]
   directory = "netlify/functions"
   node_bundler = "esbuild"
