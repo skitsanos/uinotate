@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Try Uinotate: a lightweight feedback and DOM annotation widget for any website.">
+  <title>Uinotate — a little feedback goes a long way</title>
+  <link rel="stylesheet" href="demo.css">
+  <link rel="stylesheet" href="../uinotate.css">
+  <script src="../lib.js" defer></script>
+  <script src="demo.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="Uinotate home"><span class="brand-symbol" aria-hidden="true">u.</span> uinotate<span class="version">0.1</span></a>
+    <nav aria-label="Main navigation"><a href="#playground">Playground</a><a href="minimal.html">Minimal example <span aria-hidden="true">↗</span></a></nav>
+    <span class="header-note"><span class="status-dot"></span> A tiny layer of listening</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span></span> FEEDBACK, IN THE FLOW</p>
+        <h1 id="hero-title">Better pages.<br>One little <em>nudge.</em></h1>
+        <p class="hero-description">Give every thought a place to land. A quiet little widget for quick feedback and pointing out the details that matter.</p>
+        <div class="hero-actions"><button class="demo-primary" id="try-feedback">Leave a little feedback <span aria-hidden="true">↗</span></button><button class="demo-secondary" id="try-annotation">Point to a detail <span aria-hidden="true">◎</span></button></div>
+        <div class="hero-footnote"><span class="mini-orbit" aria-hidden="true">✧</span> Just two files. At home on any page.</div>
+      </div>
+
+      <div class="sample-wrap">
+        <div class="sample-label">A LITTLE SOMETHING TO ANNOTATE <span aria-hidden="true">↘</span></div>
+        <article class="sample-window" aria-label="Example product card">
+          <div class="window-bar"><span class="window-dots" aria-hidden="true"><i></i><i></i><i></i></span><span>made-for-the-details.html</span><span aria-hidden="true">⌁</span></div>
+          <div class="sample-page">
+            <div class="sample-nav"><span class="sample-brand">offscript<span>®</span></span><span class="sample-edition">THE EVERYDAY COLLECTION</span></div>
+            <div class="sample-art" aria-label="Abstract lilac product illustration"><div class="art-circle"></div><div class="art-card art-card-back"></div><div class="art-card art-card-front"><span>take<br>a little<br><i>note.</i></span><small>OFFSCRIPT / NO. 01</small></div><span class="art-star" aria-hidden="true">✳</span></div>
+            <div class="sample-bottom"><div><span class="sample-kicker">SPACE FOR YOUR NEXT IDEA</span><h2>The everyday notebook.</h2><p>For thoughts that don’t fit in a tab.</p></div><button id="sample-button" class="sample-button">Take a look <span aria-hidden="true">↗</span></button></div>
+          </div>
+        </article>
+        <div class="sample-caption"><span class="caption-line"></span> That button. This spacing. The thing you can’t unsee.</div>
+      </div>
+    </section>
+
+    <section class="feature-strip" aria-label="Widget capabilities">
+      <div><span class="feature-number">01</span><div><h2>A thought, in a moment</h2><p>Quick feedback without leaving the page.</p></div></div>
+      <div><span class="feature-number">02</span><div><h2>Point. Pick. Explain.</h2><p>Turn “that thing” into an exact element.</p></div></div>
+      <div><span class="feature-number">03</span><div><h2>Make it feel like yours</h2><p>Your position, palette, and feedback service.</p></div></div>
+    </section>
+
+    <section id="playground" class="playground" aria-labelledby="playground-title">
+      <div class="section-heading"><div><p class="eyebrow">MAKE YOURSELF AT HOME</p><h2 id="playground-title">A small widget. Your way.</h2></div><p>Find the tab at the edge of the page.<br>Hover, tap, or use your keyboard to explore.</p></div>
+      <div class="playground-grid">
+        <div class="settings-card">
+          <div class="card-heading"><span class="card-index">A /</span><h3>The controls</h3><span class="live-label">LIVE PREVIEW</span></div>
+          <span class="control-label">Where should it live?</span>
+          <div class="segmented" id="edge-controls" role="group" aria-label="Widget edge"><button data-edge="left" aria-pressed="false">Left</button><button data-edge="right" aria-pressed="true">Right</button><button data-edge="top" aria-pressed="false">Top</button><button data-edge="bottom" aria-pressed="false">Bottom</button></div>
+          <label class="control-label offset-label" for="offset">A little higher or lower? <output id="offset-value">50%</output></label>
+          <input id="offset" type="range" min="20" max="80" value="50" aria-label="Position along the edge">
+          <span class="control-label">Pick a personality</span>
+          <div class="theme-controls" role="group" aria-label="Widget color theme"><button data-theme="iris" aria-pressed="true"><span class="swatch iris"></span>Iris</button><button data-theme="forest" aria-pressed="false"><span class="swatch forest"></span>Forest</button><button data-theme="ink" aria-pressed="false"><span class="swatch ink"></span>Ink</button></div>
+          <label class="failure-toggle"><input type="checkbox" id="simulate-failure"><span>Simulate a failed request</span></label>
+          <p class="control-help">Try a failure, switch this off, then resend. Your draft stays in the widget.</p>
+          <div class="endpoint"><span class="status-dot"></span><div><strong>Local demo endpoint</strong><code>POST /api/feedback · Bearer auth</code></div></div>
+        </div>
+        <div class="payload-card">
+          <div class="card-heading"><span class="card-index">B /</span><h3>On the receiving end</h3><span id="payload-badge" class="payload-badge">WAITING</span></div>
+          <div id="empty-payload" class="empty-payload"><span aria-hidden="true">{ · }</span><h4>Your feedback lands here.</h4><p>Send a quick thought or annotate an element<br>to see the JSON your service receives.</p><button id="open-feedback" class="inline-link">Send your first nudge <span aria-hidden="true">↗</span></button></div>
+          <img id="submitted-screenshot" alt="Element screenshot included in the submitted annotation" hidden>
+          <pre id="payload-output" tabindex="0" aria-label="Latest submitted feedback payload" hidden></pre>
+          <div class="payload-footer"><span class="status-dot"></span><span id="submission-status" role="status">Demo submissions are acknowledged and discarded.</span></div>
+        </div>
+      </div>
+    </section>
+    <section class="install-note" aria-label="Installation"><div><span class="code-symbol" aria-hidden="true">&lt;/&gt;</span><div><h2>Drop it in. Let people in.</h2><p>Two standalone files. Screenshot capture included.</p></div></div><code>&lt;script src="lib.js" defer&gt;&lt;/script&gt;</code><a href="minimal.html">See the minimal example <span aria-hidden="true">↗</span></a></section>
+  </main>
+  <footer class="site-footer"><span>uinotate <span class="footer-dot">/</span> The little details matter.</span><span>Built to listen.</span></footer>
+</body>
+</html>
