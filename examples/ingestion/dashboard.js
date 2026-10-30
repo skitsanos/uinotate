@@ -8,6 +8,83 @@ function node(tag, className, text) {
   if (text !== undefined) el.textContent = text;
   return el;
 }
+function styleFilter(select) {
+  const root = node("div", "filter-select"), trigger = node("button", "filter-select-trigger");
+  root.dataset.filter = select.id;
+  const label = select.labels[0], value = node("span", "filter-select-value"), popup = node("div", "filter-select-popup");
+  trigger.type = "button"; trigger.id = select.id + "-trigger";
+  label.id ||= select.id + "-label"; label.htmlFor = trigger.id;
+  trigger.setAttribute("role", "combobox"); trigger.setAttribute("aria-labelledby", label.id);
+  trigger.setAttribute("aria-haspopup", "listbox"); trigger.setAttribute("aria-expanded", "false");
+  popup.id = select.id + "-options"; popup.hidden = true;
+  popup.setAttribute("role", "listbox"); popup.setAttribute("aria-labelledby", label.id);
+  trigger.setAttribute("aria-controls", popup.id);
+  const chevron = node("span", "filter-select-chevron"); chevron.setAttribute("aria-hidden", "true");
+  trigger.append(value, chevron);
+  const choices = Array.from(select.options);
+  let active = select.selectedIndex, typed = "", lastTyped = 0;
+  const options = choices.map((choice, index) => {
+    const option = node("div", "filter-select-option", choice.textContent);
+    option.id = select.id + "-option-" + index; option.setAttribute("role", "option");
+    option.addEventListener("pointerdown", event => event.preventDefault());
+    option.addEventListener("pointermove", () => highlight(index));
+    option.addEventListener("click", () => { active = index; commit(); trigger.focus(); });
+    popup.append(option); return option;
+  });
+  function sync() {
+    value.textContent = choices[select.selectedIndex].textContent;
+    options.forEach((option, index) => option.setAttribute("aria-selected", String(index === select.selectedIndex)));
+  }
+  function highlight(index) {
+    active = Math.max(0, Math.min(index, options.length - 1));
+    options.forEach((option, i) => option.classList.toggle("is-active", i === active));
+    trigger.setAttribute("aria-activedescendant", options[active].id);
+    options[active].scrollIntoView({ block: "nearest" });
+  }
+  function open() {
+    if (!popup.hidden) return;
+    typed = ""; popup.hidden = false; trigger.setAttribute("aria-expanded", "true");
+    const bounds = root.getBoundingClientRect(), spaceBelow = innerHeight - bounds.bottom;
+    root.classList.toggle("opens-up", spaceBelow < popup.offsetHeight + 8 && bounds.top > spaceBelow);
+    highlight(select.selectedIndex);
+  }
+  function close() { popup.hidden = true; trigger.setAttribute("aria-expanded", "false"); trigger.removeAttribute("aria-activedescendant"); root.classList.remove("opens-up"); }
+  function commit() {
+    const changed = select.selectedIndex !== active;
+    select.selectedIndex = active; sync(); close();
+    if (changed) select.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+  trigger.addEventListener("click", () => popup.hidden ? open() : close());
+  trigger.addEventListener("keydown", event => {
+    if (event.key === "Tab") { if (!popup.hidden) commit(); return; }
+    if (event.key === "Escape") { if (!popup.hidden) { event.preventDefault(); close(); } return; }
+    if (["Enter", " "].includes(event.key)) { event.preventDefault(); popup.hidden ? open() : commit(); return; }
+    if (["ArrowDown", "ArrowUp", "Home", "End", "PageDown", "PageUp"].includes(event.key)) {
+      event.preventDefault();
+      const wasOpen = !popup.hidden; open();
+      if (event.altKey && event.key === "ArrowUp") { commit(); return; }
+      if (event.key === "Home") highlight(0);
+      else if (event.key === "End") highlight(options.length - 1);
+      else if (wasOpen) highlight(active + ({ ArrowDown: 1, ArrowUp: -1, PageDown: 10, PageUp: -10 }[event.key]));
+      return;
+    }
+    if (event.key.length === 1 && !event.ctrlKey && !event.metaKey && !event.altKey) {
+      event.preventDefault(); open();
+      const now = Date.now(); typed = now - lastTyped < 700 ? typed + event.key.toLowerCase() : event.key.toLowerCase(); lastTyped = now;
+      const repeated = Array.from(typed).every(char => char === typed[0]);
+      const search = repeated ? typed[0] : typed;
+      for (let step = 0; step < choices.length; step++) {
+        const index = (active + (search.length === 1 ? 1 : 0) + step) % choices.length;
+        if (choices[index].textContent.toLowerCase().startsWith(search)) { highlight(index); break; }
+      }
+    }
+  });
+  document.addEventListener("pointerdown", event => { if (!root.contains(event.target)) close(); });
+  root.addEventListener("focusout", event => { if (!root.contains(event.relatedTarget)) close(); });
+  window.addEventListener("resize", close);
+  select.addEventListener("change", sync);
+  select.hidden = true; root.append(trigger, popup); select.after(root); sync();
+}
 function notice(message = "") { $("#notice").textContent = message; $("#notice").hidden = !message; }
 function lock() {
   state.key = ""; state.selected = null; state.page = 1;
@@ -106,6 +183,7 @@ async function load() {
   } catch (error) { if (error.name !== "AbortError") notice(error.message); }
   finally { if (!signal.aborted) $("#records").removeAttribute("aria-busy"); }
 }
+for (const select of document.querySelectorAll(".filters select")) styleFilter(select);
 $("#login").addEventListener("submit", event => { event.preventDefault(); state.key = $("#access-key").value.trim(); state.page = 1; load(); });
 $("#lock").addEventListener("click", () => { lock(); notice(); $("#access-key").focus(); });
 $("#filters").addEventListener("submit", event => { event.preventDefault(); state.page = 1; load(); });
