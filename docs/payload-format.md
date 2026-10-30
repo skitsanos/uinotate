@@ -2,6 +2,8 @@
 
 This document describes the JSON emitted by Uinotate v0.1.0 with `schemaVersion: 1`. Use it when building an ingestion endpoint, feedback inbox, or annotation dashboard. The [JSON Schema](payload-v1.schema.json) describes the same structure; complete, parseable examples are available for [quick feedback](payload-examples/feedback.json) and [annotations](payload-examples/annotation.json).
 
+For a runnable receiver and inbox, see the [Bun + SQLite ingestion dashboard example](../examples/ingestion/README.md). It validates this schema, checks PNG attachments, and persists complete submissions.
+
 ## Delivery
 
 With `apiUrl` configured, the widget sends one JSON object per request:

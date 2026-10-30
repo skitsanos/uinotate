@@ -5,6 +5,7 @@
   "description": "A standalone feedback and DOM annotation widget with element screenshots.",
   "scripts": {
     "dev": "bun examples/server.js",
+    "dev:ingestion": "bun examples/ingestion/server.js",
     "dev:netlify": "bun run build:site && bun scripts/dev-netlify.js",
     "build": "bun scripts/build.js",
     "build:site": "bun run build && bun scripts/build-site.js",
@@ -16,5 +17,10 @@
   "devDependencies": {
     "happy-dom": "^21.0.1",
     "html-to-image": "1.11.13"
+  },
+  "dependencies": {
+    "ajv": "^8.20.0",
+    "ajv-formats": "^3.0.1",
+    "pngjs": "^7.0.0"
   }
 }

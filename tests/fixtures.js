@@ -1,4 +1,4 @@
-export const PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a6ioAAAAASUVORK5CYII=";
+export const PNG = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4AWP4/x8AAwAB/8hw3wgAAAAASUVORK5CYII=";
 export const PNG_BYTES = Buffer.from(PNG.split(",")[1], "base64").length;
 export function pngCanvas(document) {
   const canvas = document.createElement("canvas");

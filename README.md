@@ -35,6 +35,7 @@ netlify/functions/     Session and feedback HTTP functions
 netlify/lib/           Shared validation and session signing code
 docs/                  Deployment guide, payload reference, schema, and JSON examples
 examples/              Playground, minimal integration, and local demo server
+examples/ingestion/    Persistent Bun + SQLite feedback inbox and widget test page
 tests/                 Widget, screenshot, and demo server tests
 bun.lock               Locked development dependencies
 ```
@@ -58,6 +59,18 @@ Open [the playground](http://127.0.0.1:4173/examples/). It includes live edge/of
 The demo server listens on `127.0.0.1:4173`. Override the port with `UINOTATE_DEMO_PORT=4300 bun run dev`. It acknowledges and discards submissions; it does not store feedback. It is a development example, not a production feedback backend.
 
 The playground fetches a signed, 15-minute session from `/api/demo-session`, then sends it as the Bearer token on `/api/feedback`. The local server generates a temporary signing key at startup. For Netlify's local headers, redirects, and function runtime, use `bun run dev:netlify` and open `http://localhost:8888/examples/`.
+
+### Run a receiving dashboard
+
+The [ingestion dashboard example](examples/ingestion/README.md) receives real widget payloads, persists them in SQLite, and displays feedback, element annotations, and attached screenshots. It includes search, type/category filters, pagination, and a connected widget test page.
+
+```sh
+export UINOTATE_INGEST_TOKEN="$(openssl rand -hex 32)"
+export UINOTATE_DASHBOARD_TOKEN="$(openssl rand -hex 32)"
+bun run dev:ingestion
+```
+
+Open [the local inbox](http://127.0.0.1:4180) using the dashboard key; use the separate submission key on its widget test page. See the [setup guide](examples/ingestion/README.md) for key access, CORS, HTTP routes, and persistent storage. This example stores data locally; the public Netlify playground still discards it.
 
 ## Include it in a page
 

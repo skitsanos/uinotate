@@ -6,6 +6,8 @@ The deployment serves the examples and the two widget files over HTTPS. Netlify 
 
 For your own ingestion service or dashboard, use the [payload format reference](payload-format.md), [JSON Schema](payload-v1.schema.json), and complete [JSON examples](payload-examples/).
 
+The [local ingestion dashboard](../examples/ingestion/README.md) demonstrates persistent storage and viewing. It runs as a separate Bun + SQLite server, rather than a Netlify Function.
+
 ## Deploy your own copy with the button
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/skitsanos/uinotate&fullConfiguration=true)

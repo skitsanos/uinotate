@@ -22,7 +22,7 @@ check((await send(payload, { Authorization: "Bearer invalid" })).status === 401,
 const accepted = await send(payload);
 check(accepted.status === 201, "Feedback returned " + accepted.status);
 check((await accepted.json()).stored === false, "The public demo must not retain feedback");
-const png = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a6ioAAAAASUVORK5CYII=";
+const png = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR4AWP4/x8AAwAB/8hw3wgAAAAASUVORK5CYII=";
 const annotation = { ...payload, id: "smoke-" + randomUUID(), type: "annotation", element: { selector: "#example", screenshot: { mimeType: "image/png", dataUrl: png, width: 1, height: 1, byteLength: Buffer.from(png.split(",")[1], "base64").length, capturedAt: new Date().toISOString() } } };
 const annotated = await send(annotation);
 check(annotated.status === 201 && (await annotated.json()).screenshot?.width === 1, "PNG annotation was not accepted");

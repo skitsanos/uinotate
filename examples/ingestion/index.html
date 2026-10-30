@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uinotate — feedback inbox</title>
+  <link rel="stylesheet" href="/dashboard.css"><script src="/dashboard.js" defer></script>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Uinotate inbox"><span>u.</span> uinotate <small>INBOX</small></a>
+    <nav aria-label="Main navigation"><a class="active" href="/">Inbox</a><a href="/try">Widget test page ↗</a><button id="lock" class="quiet" hidden>Lock inbox</button></nav>
+  </header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">A PLACE FOR THE LITTLE DETAILS</p><h1>Every nudge, <em>in view.</em></h1><p class="muted">Feedback, precise annotations, and the screenshots that explain them.</p></div><span class="environment"><span></span> Local ingestion example</span></section>
+    <section id="access" class="access-card" aria-labelledby="access-title">
+      <div class="access-mark" aria-hidden="true">u.</div><h2 id="access-title">Your inbox, behind a key.</h2><p class="muted">Enter this example’s dashboard access key to view submitted feedback.</p>
+      <form id="login"><label for="access-key">Dashboard access key</label><div class="input-action"><input id="access-key" type="password" required autocomplete="off" spellcheck="false"><button class="primary" type="submit">Open inbox →</button></div></form>
+      <p class="fine">The key stays in this tab’s memory. Reloading or locking the inbox clears it.</p>
+    </section>
+    <p id="notice" class="notice" role="status" aria-live="polite" hidden></p>
+    <section id="inbox" hidden aria-label="Feedback inbox">
+      <div class="stats" aria-label="Inbox totals"><div><span id="count-total">0</span><p>Total nudges</p></div><div><span id="count-feedback">0</span><p>Quick feedback</p></div><div><span id="count-annotations">0</span><p>Annotations</p></div><div><span id="count-screenshots">0</span><p>With a screenshot</p></div></div>
+      <form id="filters" class="filters" role="search"><div class="search-field"><label for="search">Search the inbox</label><input type="search" id="search" maxlength="200" placeholder="Message, page, or selector…"></div><div><label for="type">Type</label><select id="type"><option value="">All types</option><option value="feedback">Quick feedback</option><option value="annotation">Annotations</option></select></div><div><label for="category">Category</label><select id="category"><option value="">All categories</option><option value="general">General</option><option value="style">Visual style</option><option value="layout">Layout</option><option value="content">Content</option><option value="interaction">Interaction</option><option value="other">Other</option></select></div><button id="refresh" class="secondary" type="button">Refresh ↻</button></form>
+      <div class="workspace"><section class="list-panel" aria-label="Submitted feedback"><div class="panel-heading"><h2>The inbox</h2><span id="result-count" class="fine"></span></div><div id="records" class="records"></div><div class="pagination"><button id="previous" class="quiet">← Previous</button><span id="page-label" class="fine"></span><button id="next" class="quiet">Next →</button></div></section><section id="detail" class="detail-panel" aria-label="Selected submission" aria-live="polite"><div class="detail-empty"><div class="empty-orbit" aria-hidden="true"><span>u.</span></div><h2>A little context goes a long way.</h2><p class="muted">Select a nudge to read the note,<br>inspect its element, and see the screenshot.</p></div></section></div>
+      <p class="fine storage-note">Submissions are saved to this example’s local SQLite database. Refresh to check for new arrivals.</p>
+    </section>
+  </main><footer>uinotate / The little details matter.<a href="/try">Send a test nudge ↗</a></footer>
+</body>
+</html>
