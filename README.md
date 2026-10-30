@@ -33,7 +33,7 @@ scripts/build-site.js  Allowlisted static demo build for Netlify
 netlify.toml           Build, headers, redirects, and local runtime configuration
 netlify/functions/     Session and feedback HTTP functions
 netlify/lib/           Shared validation and session signing code
-docs/                  Deployment guide
+docs/                  Deployment guide, payload reference, schema, and JSON examples
 examples/              Playground, minimal integration, and local demo server
 tests/                 Widget, screenshot, and demo server tests
 bun.lock               Locked development dependencies
@@ -210,6 +210,8 @@ Scoped classes such as `.uinotate-dialog`, `.uinotate-launcher`, `.uinotate-acti
 
 ## API payload
 
+Building a receiving service or dashboard? See the [payload format reference](docs/payload-format.md) for field definitions, optional values, capture timing, response handling, and ingestion guidance. A [JSON Schema](docs/payload-v1.schema.json) and complete [feedback](docs/payload-examples/feedback.json) and [annotation](docs/payload-examples/annotation.json) examples are included.
+
 Both feedback types use a versioned JSON envelope. An annotation adds `element`:
 
 ```json
@@ -248,7 +250,7 @@ Both feedback types use a versioned JSON envelope. An annotation adds `element`:
 
 Quick feedback uses `type: 'feedback'`, `category: 'general'`, and omits `element`. Annotation categories are `style`, `layout`, `content`, `interaction`, and `other`. Rectangle coordinates use CSS pixels; `x/y` are relative to the viewport and `pageX/pageY` include page scrolling. The example above abbreviates the style map and PNG data. Real payloads contain the complete base64 PNG.
 
-`element.screenshot` is included only when capture succeeds and “Attach element screenshot” is checked. `width/height` are raster pixel dimensions and `byteLength` is the decoded PNG size. The PNG is captured at selection or retake, alongside the element selector, rectangle, and styles; retries reuse the reviewed image. Rasterization uses up to 2× device resolution, bounded by the configured dimension and byte limits. The playground displays the attached image and abbreviates base64 in its JSON inspector, while posting the complete data to the endpoint.
+`element.screenshot` is included only when capture succeeds and “Attach element screenshot” is checked. `width/height` are raster pixel dimensions and `byteLength` is the decoded PNG size. The PNG is captured at selection or retake, alongside the element selector, rectangle, and styles; retries reuse the reviewed image. Rasterization uses up to two raster pixels per CSS pixel, capped by the device pixel ratio and bounded by the configured dimension and byte limits. The playground displays the attached image and abbreviates base64 in its JSON inspector, while posting the complete data to the endpoint.
 
 Base64 adds roughly one third to the binary size. Allow sufficient JSON request body capacity on your API and reverse proxy; the default 300 KB PNG needs about 400 KB of JSON plus the message and element context. The local demo allows 1 MiB requests and validates the PNG header, dimensions, and byte count before acknowledging it. It still discards the submission.
 

@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Uinotate payload version 1",
+  "description": "Normal widget output. Unknown fields are allowed. Application limits, authentication and PNG binary validation are the receiver's responsibility.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "type", "message", "category", "createdAt", "page", "metadata"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": { "type": "string", "minLength": 1 },
+    "type": { "enum": ["feedback", "annotation"] },
+    "message": { "type": "string", "minLength": 1, "pattern": "\\S" },
+    "category": { "type": "string" },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "page": { "$ref": "#/$defs/page" },
+    "metadata": { "type": "object" },
+    "element": { "$ref": "#/$defs/element" }
+  },
+  "oneOf": [
+    {
+      "properties": { "type": { "const": "feedback" }, "category": { "const": "general" } },
+      "not": { "required": ["element"] }
+    },
+    {
+      "properties": {
+        "type": { "const": "annotation" },
+        "category": { "enum": ["style", "layout", "content", "interaction", "other"] }
+      },
+      "required": ["element"]
+    }
+  ],
+  "$defs": {
+    "page": {
+      "type": "object",
+      "required": ["url", "title", "viewport", "scroll"],
+      "properties": {
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "viewport": {
+          "type": "object",
+          "required": ["width", "height", "devicePixelRatio"],
+          "properties": {
+            "width": { "type": "number", "minimum": 0 },
+            "height": { "type": "number", "minimum": 0 },
+            "devicePixelRatio": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "scroll": {
+          "type": "object",
+          "required": ["x", "y"],
+          "properties": { "x": { "type": "number" }, "y": { "type": "number" } }
+        }
+      }
+    },
+    "element": {
+      "type": "object",
+      "required": ["selector", "tagName", "id", "classes", "rect"],
+      "properties": {
+        "selector": { "type": "string", "minLength": 1 },
+        "tagName": { "type": "string", "minLength": 1 },
+        "id": { "type": ["string", "null"] },
+        "classes": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+        "rect": {
+          "type": "object",
+          "required": ["x", "y", "width", "height", "pageX", "pageY"],
+          "properties": {
+            "x": { "type": "number" },
+            "y": { "type": "number" },
+            "width": { "type": "number", "minimum": 0 },
+            "height": { "type": "number", "minimum": 0 },
+            "pageX": { "type": "number" },
+            "pageY": { "type": "number" }
+          }
+        },
+        "styles": { "type": "object", "additionalProperties": { "type": "string" } },
+        "text": { "type": "string", "maxLength": 300 },
+        "screenshot": { "$ref": "#/$defs/screenshot" }
+      }
+    },
+    "screenshot": {
+      "type": "object",
+      "required": ["mimeType", "dataUrl", "width", "height", "byteLength", "capturedAt"],
+      "properties": {
+        "mimeType": { "const": "image/png" },
+        "dataUrl": { "type": "string", "pattern": "^data:image/png;base64,[A-Za-z0-9+/]+={0,2}$" },
+        "width": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "height": { "type": "integer", "minimum": 1, "maximum": 4096 },
+        "byteLength": { "type": "integer", "minimum": 1, "maximum": 2000000 },
+        "capturedAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

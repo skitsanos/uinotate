@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "id": "b9afc2df-3636-4b79-811a-cce021214b3f",
+  "type": "annotation",
+  "message": "This button needs more room around it.",
+  "category": "layout",
+  "createdAt": "2026-10-30T10:01:00.000Z",
+  "page": {
+    "url": "https://example.com/settings",
+    "title": "Settings",
+    "viewport": { "width": 1280, "height": 800, "devicePixelRatio": 2 },
+    "scroll": { "x": 0, "y": 120 }
+  },
+  "metadata": { "project": "storefront", "release": "1.0.0" },
+  "element": {
+    "selector": "#save-button",
+    "tagName": "button",
+    "id": "save-button",
+    "classes": ["primary"],
+    "rect": { "x": 24, "y": 480, "width": 120, "height": 40, "pageX": 24, "pageY": 600 },
+    "styles": {
+      "display": "inline-block",
+      "position": "static",
+      "color": "rgb(255, 255, 255)",
+      "background-color": "rgb(40, 116, 101)",
+      "font-family": "system-ui, sans-serif",
+      "font-size": "14px",
+      "font-weight": "400",
+      "line-height": "20px",
+      "padding": "10px 16px",
+      "margin": "0px",
+      "border": "0px none rgb(255, 255, 255)",
+      "border-radius": "8px",
+      "gap": "normal",
+      "align-items": "normal",
+      "justify-content": "normal"
+    },
+    "text": "Save changes",
+    "screenshot": {
+      "mimeType": "image/png",
+      "dataUrl": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a6ioAAAAASUVORK5CYII=",
+      "width": 1,
+      "height": 1,
+      "byteLength": 68,
+      "capturedAt": "2026-10-30T10:00:40.000Z"
+    }
+  }
+}

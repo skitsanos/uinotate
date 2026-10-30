@@ -4,6 +4,8 @@ The live playground is at [uinotate.netlify.app](https://uinotate.netlify.app/ex
 
 The deployment serves the examples and the two widget files over HTTPS. Netlify Functions provide `/api/demo-session` and `/api/feedback`, so feedback and PNG annotations exercise a real HTTP request. The service validates and acknowledges submissions, then discards them. It does not maintain a feedback inbox or store screenshots.
 
+For your own ingestion service or dashboard, use the [payload format reference](payload-format.md), [JSON Schema](payload-v1.schema.json), and complete [JSON examples](payload-examples/).
+
 ## Deploy your own copy with the button
 
 [![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/skitsanos/uinotate&fullConfiguration=true)

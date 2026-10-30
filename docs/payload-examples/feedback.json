@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "id": "54e72d0a-c88c-4bc6-9a12-4c26f807b3cd",
+  "type": "feedback",
+  "message": "It would help to keep the search filters when I return to this page.",
+  "category": "general",
+  "createdAt": "2026-10-30T10:00:00.000Z",
+  "page": {
+    "url": "https://example.com/products",
+    "title": "Products",
+    "viewport": { "width": 1280, "height": 800, "devicePixelRatio": 2 },
+    "scroll": { "x": 0, "y": 120 }
+  },
+  "metadata": { "project": "storefront", "release": "1.0.0" }
+}
